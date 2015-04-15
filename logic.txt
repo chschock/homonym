@@ -1,0 +1,47 @@
+
+hull_syn(a) = { x | x in syn(a) or 
+
+a - b, c, d
+b - a, c, e
+c - a
+d - 
+
+syn(a) = 
+
+vontade  Wille   Wollen
+vontade  Wille   Beschluss
+vontade  Lust    Begierde
+vontade  Lust    Verlangen
+vontade  Lust    Freude
+
+
+org      tr_A   syn_A                          tr_B  syn_B
+
+vontade  Wille  (Wollen, Beschluss)            Lust  (Begierde, Verlangen, Freude)         diff
+vontade  Wille  (Wille, Wollen, Beschluss)     Verlangen  (Begierde, Verlangen, Freude)    diff
+vontade  Lust   (Begierde, Verlangen, Freude)  Verlangen  (Begierde, Lust)                 id
+
+vontade  (Begierde, Verlangen)
+
+vontade Wille
+vontade Lust
+
+vontade  Wille
+vontade  Lust
+vontade  Verlangen 
+
+
+
+A, B synonym ?
+
+Assumption: alpha and beta are not both homonyms
+
+trans(A) =  alpha, beta
+trans(B) =  alpha, beta
+
+Then 
+|trans(A) cap trans(B)| > 1
+oBdA beta no homonym -> A, B can have same meaning
+is a symmetric definition
+easy to realize in SQL with selfjoin of table of translation sets
+
