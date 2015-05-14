@@ -31,22 +31,32 @@ def load_dict(lang_org, lang_trans, fn):
 			data[0:len(d)] = [strip(d[i]) for i in range(len(d))]
 			print(data)
 			pos_arr = data[2].split(' ')
-			for p in pos_arr:
-				exstr = cur.mogrify("INSERT INTO dict VALUES (%s,%s,%s,%s,%s)",
-									(data[0], data[1], p, lang_org, lang_trans))
-				cur.execute(exstr)
-				print(exstr)
+			if data[0]:
+				for p in pos_arr:
+					exstr = cur.mogrify("INSERT INTO dict VALUES (%s,%s,%s,%s,%s)",
+										(data[0], data[1], p, lang_org, lang_trans))
+					cur.execute(exstr)
+					print(exstr)
 
 		conn.commit()
 		cur.close()
 
 for arg in sys.argv[1:]:
 	m = re.match('.*/(\w+)-(\w+)\.cc', arg)
+	sys.stderr.write("loading dic %s -> %s\n" % (m.group(1), m.group(2)))
 	load_dict(m.group(1), m.group(2), arg)
 
+
+# sys.stderr.write("indexing dict\n")
+# cur = conn.cursor()
+# # cur.execute("CREATE INDEX ON dict (trans, pos, lang_trans);")
+# cur.execute("CREATE INDEX ON dict (trans);")
+# # cur.execute("CREATE INDEX ON dict (trans, pos, lang_org, lang_trans)")
+# conn.commit()
+# cur.close()
 conn.close()
 
-sys.stderr.write("calculating synonyms")
+sys.stderr.write("calculating synonyms\n")
 os.system('psql homonym -f synon.sql')
-sys.stderr.write("calculating homonyms")
+sys.stderr.write("calculating homonyms\n")
 os.system('psql homonym -f homon.sql')

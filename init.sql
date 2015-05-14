@@ -11,9 +11,11 @@ Create table dict (
 DROP TABLE IF EXISTS synon;
 CREATE TABLE synon (
   word VARCHAR,
+  word_trans VARCHAR,
   synset VARCHAR[],
   pos VARCHAR,
   lang VARCHAR,
+  lang_trans VARCHAR,
   cnt SMALLINT
 );
 
@@ -23,5 +25,7 @@ CREATE TABLE homon (
   pos VARCHAR,
   lang VARCHAR,
   synset1 VARCHAR[],
-  synset2 VARCHAR[]
+  synset2 VARCHAR[],
+  ss1info VARCHAR,
+  ss2info VARCHAR
 );
