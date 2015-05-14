@@ -46,5 +46,7 @@ for arg in sys.argv[1:]:
 
 conn.close()
 
+sys.stderr.write("calculating synonyms")
 os.system('psql homonym -f synon.sql')
+sys.stderr.write("calculating homonyms")
 os.system('psql homonym -f homon.sql')

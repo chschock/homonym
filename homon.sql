@@ -1,4 +1,6 @@
 
+TRUNCATE homon;
+
 INSERT INTO homon
 -- dictionary translation org to array of word and all its synonyms
 WITH synon_dict AS (
@@ -6,7 +8,7 @@ WITH synon_dict AS (
   FROM dict JOIN synon
   ON trans = word AND dict.pos = synon.pos AND lang_trans = synon.lang
 )
-SELECT a.org, a.pos, a.lang_org, a.synset synset1, b.synset synset2
+SELECT a.org, a.pos, a.lang_org, a.lang_trans, a.synset synset1, b.synset synset2
 FROM synon_dict a JOIN synon_dict b
-ON a.org = b.org AND a.pos = b.pos AND a.lang_org = b.lang_org
+ON a.org = b.org AND a.pos = b.pos AND a.lang_org = b.lang_org AND a.lang_trans = b.lang_trans
 WHERE NOT (a.synset && b.synset);

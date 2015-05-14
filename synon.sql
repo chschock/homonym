@@ -1,4 +1,6 @@
 
+TRUNCATE synon;
+
 INSERT INTO synon 
 SELECT 
     d1.org
