@@ -1,7 +1,7 @@
 
 TRUNCATE synon;
 
-INSERT INTO synon 
+INSERT INTO synon (word, word_trans, synset, pos, lang, lang_trans, cnt)
 SELECT
     d1.org
   , d1.trans
@@ -21,5 +21,6 @@ GROUP BY
   , d1.trans 
   , d1.pos 
   , d1.lang_org 
-  , d1.lang_trans
---HAVING count(*) > 1;
+  , d1.lang_trans;
+--HAVING count(*) > 1; -- might filter wrong soutions due to weak dictionary
+
