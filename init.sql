@@ -29,17 +29,6 @@ CREATE TABLE homon (
   synon_id INT
 );
 
-CREATE VIEW v_homon AS (
-  SELECT 
-      homon.pos
-    , homon.lang lg
-    , synon.lang || '->' || synon.lang_trans || ' (' || left(synon.word_trans, 16) || ')' syninfo
-    , homon.word
-    , synon.synset
-  FROM homon JOIN synon ON synon_id = synon.id
-  ORDER BY homon.word, homon.lang, homon.pos, synon.lang_trans
-);
-
 DROP TABLE IF EXISTS homon_group;
 CREATE TABLE homon_group (
   word VARCHAR,
