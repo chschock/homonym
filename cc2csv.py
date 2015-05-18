@@ -41,8 +41,8 @@ def load_dict(lang_org, lang_trans, fn):
 										(data[0], data[1], p, lang_org, lang_trans))
 					cur.execute(exstr)
 			else:
-				skip_cnt++
-				sys.stderr.write('skipped line: "%s"' % d)
+				skip_cnt = skip_cnt + 1
+				#print('skipped line: "%s"' % d)
 
 		conn.commit()
 		cur.close()

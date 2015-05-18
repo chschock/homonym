@@ -17,6 +17,7 @@ CREATE TABLE synon (
   pos VARCHAR,
   lang VARCHAR,
   lang_trans VARCHAR,
+  eq_class BIGINT,
   cnt SMALLINT
 );
 

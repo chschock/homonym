@@ -1,7 +1,7 @@
 
 TRUNCATE synon;
 
-INSERT INTO synon (word, word_trans, synset, pos, lang, lang_trans, cnt)
+INSERT INTO synon (word, word_trans, synset, pos, lang, lang_trans, eq_class, cnt)
 SELECT
     d1.org
   , d1.trans
@@ -9,6 +9,9 @@ SELECT
   , d1.pos
   , d1.lang_org
   , d1.lang_trans
+  , hashtext(array_to_string(
+      ARRAY(select distinct unnest(array_agg(d2.org)||d1.org) ORDER BY 1),
+      ',')) eq_class
   , count(*) cnt
 FROM dict d1, dict d2 
 WHERE d1.trans = d2.trans 
@@ -21,6 +24,6 @@ GROUP BY
   , d1.trans 
   , d1.pos 
   , d1.lang_org 
-  , d1.lang_trans;
---HAVING count(*) > 1; -- might filter wrong soutions due to weak dictionary
-
+  , d1.lang_trans
+--HAVING count(*) > 1 -- might filter wrong soutions due to weak dictionary
+;
