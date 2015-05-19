@@ -9,7 +9,7 @@ import csv
 def echo(bytes): print(bytes.decode('UTF-8'))
 
 # Init and try to connect
-echo(subprocess.check_output('psql homonym -f init.sql', shell=True))
+# echo(subprocess.check_output('psql homonym -f init.sql', shell=True))
 
 try:
 	conn = psycopg2.connect("dbname='homonym' user='chris' host='localhost' password=''")
@@ -63,9 +63,9 @@ for arg in sys.argv[1:]:
 # cur.close()
 conn.close()
 
-print("cleansing dict\n")
-echo(subprocess.check_output('psql homonym -f cleanse-dict.sql', shell=True))
-print("calculating synonyms\n")
-echo(subprocess.check_output('psql homonym -f synon.sql', shell=True))
-print("calculating homonyms\n")
-echo(subprocess.check_output('psql homonym -f homon.sql', shell=True))
+# print("cleansing dict\n")
+# echo(subprocess.check_output('psql homonym -f cleanse-dict.sql', shell=True))
+# print("calculating synonyms\n")
+# echo(subprocess.check_output('psql homonym -f synon.sql', shell=True))
+# print("calculating homonyms\n")
+# echo(subprocess.check_output('psql homonym -f homon.sql', shell=True))

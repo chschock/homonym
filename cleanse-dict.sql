@@ -1,3 +1,5 @@
+raise notice 'cleansing dict';
+
 -- delete duplicate entries
 with dups as (
 select *

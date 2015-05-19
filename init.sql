@@ -1,3 +1,4 @@
+raise notice 'initializing db';
 
 drop table if exists dict;
 Create table dict (
@@ -28,13 +29,4 @@ CREATE TABLE homon (
   pos VARCHAR,
   lang VARCHAR,
   synon_id INT
-);
-
-DROP TABLE IF EXISTS homon_group;
-CREATE TABLE homon_group (
-  word VARCHAR,
-  pos VARCHAR,
-  lang VARCHAR,
-  synsets VARCHAR[][],
-  ssinfos VARCHAR[]
 );

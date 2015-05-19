@@ -8,7 +8,7 @@ WITH synon_dict AS (
         dict.org
       , dict.pos
       , dict.lang_org
-      , synon.synset || synon.word synset
+      , synon.synset  || synon.word synset -- less results
       , synon.lang syn_lang
       , synon.id synon_id
   FROM dict JOIN synon ON 
@@ -30,15 +30,3 @@ WHERE
   NOT (a.synset && b.synset)
 ORDER BY a.org, a.lang_org, a.pos;
 
-DROP VIEW IF EXISTS v_homon;
-CREATE VIEW v_homon AS (
-  SELECT DISTINCT ON (homon.word, homon.lang, homon.pos, synon.lang_trans, synon.lang, synon.eq_class) 
-      homon.pos
-    , homon.lang lg
-    , homon.word
-    , synon.lang || '->' || synon.lang_trans || ' (' || left(synon.word_trans, 16) || ')' syninfo
---    , right(synon.eq_class::TEXT, 3) eqc
-    , synon.word || ': ' || array_to_string(synon.synset, ', ') translation_meaning
-  FROM homon JOIN synon ON synon_id = synon.id
-  ORDER BY homon.word, homon.lang, homon.pos, synon.lang_trans, synon.lang, synon.eq_class, synon.cnt desc
-);
