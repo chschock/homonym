@@ -1,4 +1,3 @@
-raise notice 'initializing db';
 
 drop table if exists dict;
 Create table dict (
@@ -30,3 +29,6 @@ CREATE TABLE homon (
   lang VARCHAR,
   synon_id INT
 );
+
+DROP TABLE IF EXISTS homon_1;
+CREATE TABLE homon_1 like homon;
