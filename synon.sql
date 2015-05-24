@@ -1,7 +1,7 @@
 
 TRUNCATE synon;
 
-INSERT INTO synon (word, word_trans, synset, pos, lang, lang_trans, eq_class, cnt)
+INSERT INTO synon (word, image, synset, pos, lang, lang_image, eq_class, cnt)
 SELECT
     d1.org
   , d1.trans

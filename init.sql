@@ -12,11 +12,11 @@ DROP TABLE IF EXISTS synon CASCADE;
 CREATE TABLE synon (
   id SERIAL,
   word VARCHAR,
-  word_trans VARCHAR,
+  image VARCHAR,
   synset VARCHAR[],
   pos VARCHAR,
   lang VARCHAR,
-  lang_trans VARCHAR,
+  lang_image VARCHAR,
   eq_class BIGINT,
   cnt SMALLINT
 );
@@ -31,4 +31,4 @@ CREATE TABLE homon (
 );
 
 DROP TABLE IF EXISTS homon_1;
-CREATE TABLE homon_1 like homon;
+CREATE TABLE homon_1 (like homon);
