@@ -29,7 +29,8 @@ CREATE TABLE homon (
   word VARCHAR,
   pos VARCHAR,
   lang VARCHAR,
-  synon_id INT
+  synon_id INT,
+  sound BOOLEAN DEFAULT FALSE
 );
 drop table if exists homon_1;
 CREATE TABLE homon_1 (like homon);
