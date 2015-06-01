@@ -21,8 +21,12 @@ postprocess:
 
 views:
 	psql homonym -f views.sql
+views1:
+	sed -e 's/ homon / homon_1 /g' views.sql | \
+	sed -e 's/ synon / synon_1 /g' | \
+	sed -e 's/ v_/ v1_/g' | psql homonym
 
-transform: cleanse synon homon
+transform: cleanse synon homon postprocess
 
 all: load transform views
 

@@ -5,13 +5,20 @@ CREATE VIEW v_homon_base AS (
       h.pos
     , h.word
     , h.lang || '>' || s.lang || '<' || s.lang_image || ' (' || left(s.image, 16) || ')' lang_graph
+    , synon_id
     , s.word || ': ' || array_to_string(s.synset, ', ') meaning
+    -- , right(
+    --         string_agg(array_to_string(s.synset, ', '), ' / ') 
+    --           over (partition by s.word, s.lang, h.pos order by s.cnt desc, s.id),
+    --         - length(s.word || ': ' || array_to_string(s.synset, ', ')) - 3
+    --         ) synsets
     , s.eq_class
     , s.cnt
     , s.word trans
     , h.lang
     , s.lang lang_trans
     , s.lang_image
+--    , case when (s.word, s.lang, s.pos) in (select word, lang, pos from homon)
   FROM homon h JOIN synon s 
   ON synon_id = s.id
   ORDER BY h.word, h.lang, h.pos, s.lang_image, s.lang, s.eq_class, s.cnt desc
@@ -19,26 +26,26 @@ CREATE VIEW v_homon_base AS (
 
 create view v_homon_e as (
   select distinct on (word, pos, lang, lang_trans, lang_image, eq_class)
-    pos, left(word, 16) word, lang_graph, meaning
+    pos, left(word, 16) word_abbr, lang_graph, meaning, word
   from v_homon_base 
   ORDER BY word, pos, lang, lang_trans, lang_image, eq_class, cnt desc
 );
 
 create view v_homon_1 as (
   select distinct on (word, pos, lang, lang_trans, lang_image, trans)
-    pos, left(word, 16) word, lang_graph, meaning
+    pos, left(word, 16) word_abbr, lang_graph, meaning, word
   from v_homon_base 
-  ORDER BY word, pos, lang, lang_trans, lang_image, trans, cnt desc
+  ORDER BY word, pos, lang, lang_trans, lang_image, trans, cnt desc, synon_id
 );
 
 create view v_homon as (
   select distinct on (word, pos, lang, lang_trans, lang_image, trans)
-    pos, left(word, 16) word, lang_graph, meaning
+    pos, left(word, 16) word_abbr, lang_graph, meaning, word
   from (
     select distinct on (word, pos, lang, lang_trans, lang_image, eq_class) * 
     from v_homon_base
     ) sub
-  ORDER BY word, pos, lang, lang_trans, lang_image, trans, cnt desc
+  ORDER BY word, pos, lang, lang_trans, lang_image, trans, cnt desc, synon_id
 );
 
 create view v_homon_top AS (
