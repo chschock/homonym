@@ -1,14 +1,16 @@
 
+P=../data
 
 init:
 	psql homonym -f init.sql
 
 load: init
-	./cc2csv.py ../data/de-fr.cc ../data/fr-de.cc ../data/de-es.cc ../data/es-de.cc ../data/pt-de.cc ../data/de-pt.cc ../data/en-es.cc ../data/es-en.cc ../data/en-fr.cc ../data/fr-en.cc ../data/en-pt.cc ../data/pt-en.cc > /dev/null
-	#./cc2csv.py ../data/de-fr.cc ../data/fr-de.cc ../data/de-es.cc ../data/es-de.cc ../data/pt-de.cc ../data/de-pt.cc ../data/en-es.cc ../data/es-en.cc ../data/en-fr.cc ../data/fr-en.cc ../data/en-pt.cc ../data/pt-en.cc ../data/tr-en.cc ../data/en-tr.cc ../data/de-tr.cc ../data/tr-de.cc> /dev/null
+	./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc > /dev/null
+	./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc  $P/de-en.cc $P/en-de.cc > /dev/null
+	#./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc $P/tr-en.cc $P/en-tr.cc $P/de-tr.cc $P/tr-de.cc> /dev/null
 
 cleanse:
-	psql homonym -f views.sql
+	psql homonym -f cleanse-dict.sql
 	
 synon: 
 	psql homonym -f synon.sql

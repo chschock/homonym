@@ -1,9 +1,7 @@
 
 -- delete duplicate entries
 with dups as (
-select *
-from dict
-group by org, trans, pos, lang_org, lang_trans
-having count(*) > 1
+    select distinct on (org, trans, pos, lang_org, lang_trans) *
+    from dict
 )
-delete from dict using dups where (dict.*) = (dups.*);
+delete from dict where id not in (select id from dups);
