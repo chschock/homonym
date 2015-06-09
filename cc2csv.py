@@ -18,7 +18,9 @@ except:
 	exit()
 
 def strip(arg):
-	strip_br = re.sub('[\(\[\{<].*?[\)\]\}>]', '', arg)
+	strip_br = re.sub('[\(\[\{][^\(\[\{]*?[\)\]\}]', '', arg)
+	strip_br = re.sub('[\(\[\{][^\(\[\{]*?[\)\]\}]', '', strip_br)
+	strip_br = re.sub('[<>]+', '', strip_br)
 	return re.sub(' +', ' ', strip_br.strip())[:50]
 
 def load_dict(lang_org, lang_trans, fn):

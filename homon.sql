@@ -8,6 +8,7 @@ WITH synon_dict AS (
         dict.org
       , dict.pos
       , dict.lang_org
+      , dict.typ
       , synon.synset  || synon.word synset -- less results
       , synon.lang syn_lang
       , synon.id synon_id
@@ -23,10 +24,9 @@ SELECT DISTINCT
     , a.synon_id
 FROM synon_dict a JOIN synon_dict b ON 
   a.org = b.org AND 
-  a.pos = b.pos AND 
-  a.lang_org = b.lang_org AND 
-  a.syn_lang = b.syn_lang 
+  a.typ = b.typ 
 WHERE 
   NOT (a.synset && b.synset)
 ORDER BY a.org, a.lang_org, a.pos;
 
+ANALYZE homon;
