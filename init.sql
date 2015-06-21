@@ -1,42 +1,53 @@
+drop schema if exists public cascade;
+create schema public;
 
-drop table if exists dict;
-Create table dict (
+create table dict_complete (
   id serial,
-  org VARCHAR collate "de_DE", 
-  trans VARCHAR collate "de_DE", 
-  pos VARCHAR collate "de_DE",
-  lang_org VARCHAR collate "de_DE",
-  lang_trans VARCHAR collate "de_DE",
-  typ INT DEFAULT NULL,
-  phrase_org VARCHAR collate "de_DE",
-  phrase_trans VARCHAR collate "de_DE"
+  org varchar collate "de_DE",
+  trans varchar collate "de_DE",
+  pos varchar collate "de_DE",
+  lang_org varchar collate "de_DE",
+  lang_trans varchar collate "de_DE",
+  typ int default null,
+  phrase_org varchar collate "de_DE",
+  phrase_trans varchar collate "de_DE"
 );
 
-DROP TABLE IF EXISTS synon CASCADE;
-CREATE TABLE synon (
-  id SERIAL,
-  word VARCHAR,
-  image VARCHAR,
-  synset VARCHAR[],
-  pos VARCHAR,
-  lang VARCHAR,
-  lang_image VARCHAR,
-  typ INT DEFAULT NULL,
-  eq_class BIGINT,
-  cnt SMALLINT,
-  sound BOOLEAN DEFAULT FALSE
-);
-drop table if exists synon_1 cascade;
-CREATE TABLE synon_1 (like synon);
+create table dict (like dict_complete);
 
-DROP TABLE IF EXISTS homon cascade;
-CREATE TABLE homon (
-  id SERIAL,
-  word VARCHAR,
-  pos VARCHAR,
-  lang VARCHAR,
-  synon_id INT,
-  sound BOOLEAN DEFAULT FALSE
+create table lang_weight (
+lang    varchar,
+weight  real
 );
-drop table if exists homon_1 cascade;
-CREATE TABLE homon_1 (like homon);
+
+create table pronoun (
+  id serial,
+  lang varchar,
+  pp varchar,
+  cnt int
+);
+
+create table synon (
+  id serial primary key,
+  word varchar,
+  image varchar,
+  synset varchar[],
+  pos varchar,
+  lang varchar,
+  lang_image varchar,
+  typ int default null,
+  eq_class bigint,
+  cnt smallint,
+  sound boolean default false
+);
+create table synon_1 (like synon);
+
+create table homon (
+  id serial,
+  word varchar,
+  pos varchar,
+  lang varchar,
+  synon_id int,
+  sound boolean default false
+);
+create table homon_1 (like homon);

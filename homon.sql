@@ -1,10 +1,10 @@
 
-TRUNCATE homon;
+truncate homon;
 
-INSERT INTO homon (word, pos, lang, synon_id)
+insert into homon (word, pos, lang, synon_id)
 -- dictionary translation org to array of word and all its synonyms
-WITH synon_dict AS (
-  SELECT 
+with synon_dict as (
+  select
         dict.org
       , dict.pos
       , dict.lang_org
@@ -12,21 +12,23 @@ WITH synon_dict AS (
       , synon.synset  || synon.word synset -- less results
       , synon.lang syn_lang
       , synon.id synon_id
-  FROM dict JOIN synon ON 
-    dict.trans = synon.word AND 
-    dict.pos = synon.pos AND 
+  from dict join synon on
+    dict.trans = synon.word and
+    dict.pos = synon.pos and
     dict.lang_trans = synon.lang
 )
-SELECT DISTINCT
+select distinct
       a.org
     , a.pos
     , a.lang_org
     , a.synon_id
-FROM synon_dict a JOIN synon_dict b ON 
-  a.org = b.org AND 
-  a.typ = b.typ 
-WHERE 
-  NOT (a.synset && b.synset)
-ORDER BY a.org, a.lang_org, a.pos;
+from synon_dict a join synon_dict b on
+  a.org = b.org and
+  a.typ = b.typ
+where
+  not (a.synset && b.synset)
+order by a.org, a.lang_org, a.pos;
 
-ANALYZE homon;
+create index on homon (synon_id, sound);
+
+analyze homon;

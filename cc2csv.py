@@ -21,7 +21,7 @@ def strip(arg):
 	strip_br = re.sub('[\(\[\{][^\(\[\{]*?[\)\]\}]', '', arg)
 	strip_br = re.sub('[\(\[\{][^\(\[\{]*?[\)\]\}]', '', strip_br)
 	strip_br = re.sub('[<>]+', '', strip_br)
-	return re.sub(' +', ' ', strip_br.strip())[:50]
+	return re.sub(' +', ' ', strip_br.strip())[:100]
 
 def load_dict(lang_org, lang_trans, fn):
 	with open(fn) as fp:
@@ -39,7 +39,7 @@ def load_dict(lang_org, lang_trans, fn):
 			pos_arr = data[2].split(' ')
 			if data[0] and data[1]:
 				for p in pos_arr:
-					exstr = cur.mogrify("""INSERT INTO dict 
+					exstr = cur.mogrify("""INSERT INTO dict_complete
 						(org, trans, pos, lang_org, lang_trans, phrase_org, phrase_trans)
 						VALUES (%s,%s,%s,%s,%s,%s,%s)""",
 						(data[0], data[1], p, lang_org, lang_trans, d[0], d[1]))

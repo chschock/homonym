@@ -1,7 +1,13 @@
+drop view if exists v_dict cascade;
+create view v_dict as (
+  select left(org, 30) org, left(trans, 30) trans, pos, lang_org as fr, lang_trans as to, phrase_org, phrase_trans
+  from dict 
+  order by org, pos, lang_org, lang_trans
+);
 
-DROP VIEW IF EXISTS v_homon_base cascade;
-CREATE VIEW v_homon_base AS (
-  SELECT 
+drop view if exists v_homon_base cascade;
+create view v_homon_base as (
+  select 
       h.*
     , h.lang || '>' || s.lang || '<' || s.lang_image || ' (' || left(s.image, 16) || ')' lang_graph
     , case when h.sound then '* ' else '  ' end || 
@@ -19,23 +25,23 @@ CREATE VIEW v_homon_base AS (
     , s.lang_image
     , s.sound syn_sound
 --    , case when (s.word, s.lang, s.pos) in (select word, lang, pos from homon)
-  FROM homon h JOIN synon s 
-  ON synon_id = s.id
-  ORDER BY h.word, h.lang, h.pos, s.lang_image, s.lang, s.eq_class, s.cnt desc
+  from homon h join synon s 
+  on synon_id = s.id
+  order by h.word, h.lang, h.pos, s.lang_image, s.lang, s.eq_class, s.cnt desc
 );
 
 create view v_homon_e as (
   select distinct on (word, pos, lang, lang_trans, lang_image, eq_class)
     pos, left(word, 16) word_abbr, lang_graph, meaning, word
   from v_homon_base 
-  ORDER BY word, pos, lang, lang_trans, lang_image, eq_class, sound desc, syn_sound desc, cnt desc, synon_id
+  order by word, pos, lang, lang_trans, lang_image, eq_class, sound desc, syn_sound desc, cnt desc, synon_id
 );
 
 create view v_homon_1 as (
   select distinct on (word, pos, lang, lang_trans, lang_image, trans)
     pos, left(word, 16) word_abbr, lang_graph, meaning, word
   from v_homon_base 
-  ORDER BY word, pos, lang, lang_trans, lang_image, trans, sound desc, syn_sound desc, cnt desc, synon_id
+  order by word, pos, lang, lang_trans, lang_image, trans, sound desc, syn_sound desc, cnt desc, synon_id
 );
 
 create view v_homon as (
@@ -45,24 +51,24 @@ create view v_homon as (
     select distinct on (word, pos, lang, lang_trans, lang_image, eq_class) * 
     from v_homon_base
     ) sub
-  ORDER BY word, pos, lang, lang_trans, lang_image, trans, sound desc, syn_sound desc, cnt desc, synon_id
+  order by word, pos, lang, lang_trans, lang_image, trans, sound desc, syn_sound desc, cnt desc, synon_id
 );
 
-create view v_homon_top AS (
-  SELECT --distinct on (s.word)
+create view v_homon_top as (
+  select --distinct on (s.word)
       pos
     , left(word, 16) word
     , lang || '>' || lang_trans lg
     , count(distinct trans) cnt
     , array(select distinct unnest(array_agg(meaning || ' (' || lang_image || ')')) order by 1) trans
-  FROM (
+  from (
       select distinct on (word, pos, lang, lang_trans, trans) * -- dropped lang_image for 
       from (
         select distinct on (word, pos, lang, lang_trans, eq_class) * -- fairer counting of meanings
         from v_homon_base
         ) sub2 
       ) sub
-  GROUP BY word, lang, pos, lang_trans 
-  ORDER BY cnt desc, word, lang, pos, lang_trans
+  group by word, lang, pos, lang_trans 
+  order by cnt desc, word, lang, pos, lang_trans
 );
 
