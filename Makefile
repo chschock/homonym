@@ -7,8 +7,8 @@ init:
 	$(CLIENT) init.sql
 
 load: init
-	./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc > /dev/null
-	#./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc  $P/de-en.cc $P/en-de.cc > /dev/null
+	#./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc > /dev/null
+	./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc  $P/de-en.cc $P/en-de.cc > /dev/null
 	#./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc $P/tr-en.cc $P/en-tr.cc $P/de-tr.cc $P/tr-de.cc> /dev/null
 
 prepare:
