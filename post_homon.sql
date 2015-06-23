@@ -8,9 +8,7 @@ update homon h set sound = true
 from synon s, dict d, synon s2
 where h.synon_id = s.id
   and d.org = h.word
-  and d.pos = h.pos
-  and d.lang_org = h.lang
-  and d.lang_trans = s.lang
+  and d.typ = h.typ
   and d.trans = s2.word
   and s.image = s2.image
   and s.word != s2.word

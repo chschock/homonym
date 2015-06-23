@@ -2,8 +2,16 @@ truncate dict;
 insert into dict
 select
     id, org, trans, pos, lang_org, lang_trans,
-    hashtext(pos||lang_org||lang_trans) as typ
-from dict_complete;
+    t.typ_id as typ
+from dict_complete d
+inner join (
+    select row_number() over (order by pos, lang_org, lang_trans) as typ_id, *
+    from (
+        select pos, lang_org, lang_trans, count(*)
+        from dict_complete
+        group by pos, lang_org, lang_trans
+    ) sub
+) t using (pos, lang_org, lang_trans);
 
 -- remove sentences
 delete from dict where org ~ '.*\S+ \S+ \S+ \S+ \S+ \S+.*[.!?]$';

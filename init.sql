@@ -2,7 +2,7 @@ drop schema if exists public cascade;
 create schema public;
 
 create table dict_complete (
-  id serial,
+  id serial primary key,
   org varchar collate "de_DE",
   trans varchar collate "de_DE",
   pos varchar collate "de_DE",
@@ -28,7 +28,7 @@ create table pronoun (
 );
 
 create table synon (
-  id serial primary key,
+  id int primary key,
   word varchar,
   image varchar,
   synset varchar[],
@@ -43,10 +43,11 @@ create table synon (
 create table synon_1 (like synon);
 
 create table homon (
-  id serial,
+  id int,
   word varchar,
   pos varchar,
   lang varchar,
+  typ int,
   synon_id int,
   sound boolean default false
 );
