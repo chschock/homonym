@@ -32,21 +32,21 @@ create view v_homon_base as (
 
 create view v_homon_e as (
   select distinct on (word, typ, lang_image, eq_class)
-    pos, left(word, 16) word_abbr, lang_graph, meaning, word, trans
+    pos, left(word, 16) word_abbr, lang_graph, meaning, word, trans, id
   from v_homon_base
   order by word, typ, lang_image, eq_class, sound desc, syn_sound desc, cnt desc, synon_id
 );
 
 create view v_homon_1 as (
   select distinct on (word, typ, lang_image, trans)
-    pos, left(word, 16) word_abbr, lang_graph, meaning, word, trans
+    pos, left(word, 16) word_abbr, lang_graph, meaning, word, trans, id
   from v_homon_base
   order by word, typ, lang_image, trans, sound desc, syn_sound desc, cnt desc, synon_id
 );
 
-create view v_homon as (
+create materialized view v_homon as (
   select distinct on (word, typ, lang_image, trans)
-    pos, left(word, 16) word_abbr, lang_graph, meaning, word, trans
+    pos, left(word, 16) word_abbr, lang_graph, meaning, word, trans, id
   from (
     select distinct on (word, typ, lang_image, eq_class) *
     from v_homon_base

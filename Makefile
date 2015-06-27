@@ -1,10 +1,10 @@
 
 P=../data
 
-CLIENT=date && psql homonym -f
+CLIENT=date && psql homonym
 
 init:
-	$(CLIENT) init.sql
+	$(CLIENT) -f init.sql
 
 load: init
 	#./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc > /dev/null
@@ -12,22 +12,22 @@ load: init
 	#./cc2csv.py $P/de-fr.cc $P/fr-de.cc $P/de-es.cc $P/es-de.cc $P/pt-de.cc $P/de-pt.cc $P/en-es.cc $P/es-en.cc $P/en-fr.cc $P/fr-en.cc $P/en-pt.cc $P/pt-en.cc $P/tr-en.cc $P/en-tr.cc $P/de-tr.cc $P/tr-de.cc $P/de-en.cc $P/en-de.cc > /dev/null
 
 prepare:
-	$(CLIENT) prepare.sql
+	$(CLIENT) -f prepare.sql
 
 synon:
-	$(CLIENT) synon.sql
+	$(CLIENT) -f synon.sql
 
 post-synon:
-	$(CLIENT) post_synon.sql
+	$(CLIENT) -f post_synon.sql
 
 homon:
-	$(CLIENT) homon.sql
+	$(CLIENT) -f homon.sql
 
 post-homon:
-	$(CLIENT) post_homon.sql
+	$(CLIENT) -f post_homon.sql
 
 views:
-	$(CLIENT) views.sql
+	$(CLIENT) -f views.sql
 
 views1:
 	sed -e 's/ homon / homon_1 /g' views.sql | \
@@ -36,6 +36,16 @@ views1:
 
 transform: prepare synon post-synon homon post-homon
 
-all: load transform views views1
+graph:
+	$(CLIENT) -f create_graph.sql
+	$(CLIENT) -c "copy edge to stdout with (format csv, delimiter ',');" > edge.csv
+	$(CLIENT) -c "copy node to stdout with (format csv, delimiter ',', force_quote (label));" > node.csv
+	echo 'nodedef>name VARCHAR,label VARCHAR,class VARCHAR,color VARCHAR' > homonym.gdf
+	cat node.csv >> homonym.gdf
+	echo 'edgedef>node1 VARCHAR,node2 VARCHAR,color VARCHAR,weight DOUBLE,directed BOOLEAN' >> homonym.gdf
+	cat edge.csv >> homonym.gdf
+
+
+all: load transform views views1 graph
 
 

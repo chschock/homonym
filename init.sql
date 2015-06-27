@@ -51,6 +51,7 @@ create table homon (
   synon_id int,
   sound boolean default false
 );
+create index on homon (id);
 create table homon_1 (like homon);
 
 create or replace function sizes (out tablename name, out size text, out external_size text ) as $$
